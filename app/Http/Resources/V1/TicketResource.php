@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin Ticket
+ *
  */
 // VERY HELPFUL and necessary laravel article on resources --> https://laravel.com/docs/11.x/eloquent-resources#main-content
 class TicketResource extends JsonResource
@@ -24,7 +25,7 @@ class TicketResource extends JsonResource
             'id'            => $this->id,
             'attributes'    => [
                 'title'       => $this->title,
-                'description' => $this->description,
+                'description' => $this->when($request->routeIs('ticket.show'), $this->description),
                 'status'      => $this->status,
                 'createdAt'   => $this->created_at,
                 'updatedAt'   => $this->updated_at
@@ -38,8 +39,11 @@ class TicketResource extends JsonResource
                     'links' => ['self' => 'todo']
                 ],
             ],
+            'includes'      => [
+                new UserResource($this->user)
+            ],
             'links'         => [
-                'self' => route('tickets.show', ['ticket' => $this->id])
+                'self' => route('ticket.show', ['ticket' => $this->id])
             ]
         ];
     }
