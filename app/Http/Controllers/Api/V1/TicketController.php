@@ -10,12 +10,15 @@ use App\Models\Ticket;
 
 // php artisan command to create Controller along with requests --> 'php artisan make:controller Api/V1/TicketController --api --model=Ticket --requests'
 
-class TicketController extends Controller
+class TicketController extends ApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index() {
+        if ($this->include('author')) {
+            return TicketResource::collection(Ticket::with('user')->paginate());
+        }
         return TicketResource::collection(Ticket::paginate());
     }
 
@@ -30,6 +33,10 @@ class TicketController extends Controller
      * Display the specified resource.
      */
     public function show(Ticket $ticket) {
+        if ($this->include('author')) {
+            return new TicketResource($ticket->load('user'));
+        }
+
         return new TicketResource($ticket);
     }
 
