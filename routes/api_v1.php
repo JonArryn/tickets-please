@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('ticket', TicketController::class)->except(['update']);
     Route::put('ticket/{ticket}', [TicketController::class, 'replace']);
+    Route::patch('ticket/{ticket}', [TicketController::class, 'update']);
 
     Route::apiResource('authors', AuthorController::class);
     Route::apiResource('authors.tickets', AuthorTicketsController::class)->except(['update']);
     Route::put('authors/{author}/tickets/{ticket}', [AuthorTicketsController::class, 'replace']);
+    Route::patch('authors/{author}/tickets/{ticket}', [AuthorTicketsController::class, 'update']);
 });
 
 Route::get('/user', function (Request $request) {
