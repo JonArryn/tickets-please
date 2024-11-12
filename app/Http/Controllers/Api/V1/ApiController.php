@@ -26,7 +26,7 @@ class ApiController extends Controller
     }
 
     public function isAble($ability, $targetModel) {
-        $gate = Gate::policy($targetModel::class, $this->policyClass);
+        $gate = Gate::policy($targetModel, $this->policyClass);
         return $gate->authorize($ability, [$targetModel]);
     }
 }
